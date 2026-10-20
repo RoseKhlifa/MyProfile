@@ -13,6 +13,10 @@
   flex-shrink: 0;
   font-variant-numeric: tabular-nums;
 }
+.cv-project-grid-frame {
+  min-width: 0;
+  overflow-anchor: none;
+}
 .cv-project-filter-row .motion-enhance-tabs {
   flex-wrap: wrap;
   gap: 3px;
@@ -27,6 +31,14 @@
   }
 }
 @media print {
+  .cv-project-grid-frame {
+    height: auto !important;
+    overflow: visible !important;
+  }
+  .cv-project-grid-frame .cv-project-item {
+    animation: none !important;
+    translate: none !important;
+  }
   .cv-project-filter-row {
     display: none;
   }

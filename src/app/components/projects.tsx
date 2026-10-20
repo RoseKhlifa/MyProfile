@@ -1,7 +1,14 @@
 "use client";
 
-import { AnimatePresence, LayoutGroup } from "motion/react";
-import { useId, useState } from "react";
+import { ChevronDown } from "lucide-react";
+import {
+  AnimatePresence,
+  animate,
+  LayoutGroup,
+  motion,
+  useMotionValue,
+} from "motion/react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import {
   AnimatedTabs,
   NumberTicker,
@@ -38,12 +45,100 @@ export function Projects({ projects, initialExpanded = false }: ProjectsProps) {
   const [expanded, setExpanded] = useState(initialExpanded);
   const [hovered, setHovered] = useState<string | null>(null);
   const [selected, setSelected] = useState<Project | null>(null);
+  const [measured, setMeasured] = useState(false);
+  const [resizing, setResizing] = useState(false);
+  const [returning, setReturning] = useState(false);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const expandRef = useRef<HTMLButtonElement>(null);
+  const cancelReturn = useRef<(() => void) | null>(null);
+  const gridHeight = useMotionValue(0);
   const { reduced } = useMotionMode();
   const groupId = useId();
   const filteredProjects = projects.filter(
     (project) => filter === "all" || category(project) === filter
   );
   const gridId = `${groupId}-projects`;
+
+  useLayoutEffect(() => {
+    const grid = gridRef.current;
+    if (!grid) return;
+    let previous = grid.offsetHeight;
+    let animation: ReturnType<typeof animate> | undefined;
+    gridHeight.set(previous);
+    setMeasured(true);
+    setResizing(false);
+    const observer = new ResizeObserver(() => {
+      const next = grid.offsetHeight;
+      if (next === previous) return;
+      previous = next;
+      animation?.stop();
+      if (reduced) {
+        gridHeight.set(next);
+        setResizing(false);
+        return;
+      }
+      setResizing(true);
+      const current = animate(gridHeight, next, {
+        duration: 0.44,
+        ease: [0.22, 1, 0.36, 1],
+      });
+      animation = current;
+      void current.then(() => {
+        if (animation === current) setResizing(false);
+      });
+    });
+    observer.observe(grid);
+    return () => {
+      observer.disconnect();
+      animation?.stop();
+    };
+  }, [gridHeight, reduced]);
+
+  useEffect(() => () => cancelReturn.current?.(), []);
+
+  function toggleExpanded() {
+    if (returning) return;
+    if (!expanded) {
+      setHovered(null);
+      setExpanded(true);
+      return;
+    }
+    const grid = gridRef.current;
+    const retained = grid?.children[5];
+    const finish = () => {
+      cancelReturn.current?.();
+      cancelReturn.current = null;
+      setReturning(false);
+      setHovered(null);
+      setExpanded(false);
+      expandRef.current?.focus({ preventScroll: true });
+    };
+    if (!grid || !retained || reduced) {
+      finish();
+      return;
+    }
+    const target = Math.max(
+      0,
+      grid.getBoundingClientRect().top + window.scrollY - 24,
+      retained.getBoundingClientRect().bottom +
+        window.scrollY -
+        window.innerHeight +
+        160
+    );
+    if (window.scrollY <= target + 80) {
+      finish();
+      return;
+    }
+    setReturning(true);
+    // Return to the retained cards before shortening the page beneath the viewport.
+    const timeout = window.setTimeout(finish, 1000);
+    window.addEventListener("scrollend", finish, { once: true });
+    cancelReturn.current = () => {
+      window.clearTimeout(timeout);
+      window.removeEventListener("scrollend", finish);
+    };
+    window.scrollTo({ top: target, behavior: "smooth" });
+  }
 
   return (
     <LayoutGroup id={groupId}>
@@ -66,53 +161,88 @@ export function Projects({ projects, initialExpanded = false }: ProjectsProps) {
             value={filter}
             options={FILTERS}
             onChange={(value) => {
+              cancelReturn.current?.();
+              cancelReturn.current = null;
+              setReturning(false);
               setHovered(null);
               setExpanded(initialExpanded);
               setFilter(value as ProjectFilter);
             }}
           />
         </div>
-        <div
-          id={gridId}
-          className="grid grid-cols-1 gap-x-6 gap-y-8 md:grid-cols-2 lg:grid-cols-3 print:grid-cols-3 print:gap-4"
+        <motion.div
+          className="cv-project-grid-frame"
+          style={{
+            height: measured ? gridHeight : "auto",
+            overflow: resizing ? "clip" : "visible",
+          }}
         >
-          <AnimatePresence initial={false} mode="popLayout">
-            {filteredProjects.map((project, index) => (
-              <ProjectCard
-                key={project.title}
-                project={project}
-                hidden={!expanded && index >= 6}
-                selected={selected?.title === project.title}
-                dimmed={hovered !== null && hovered !== project.title}
-                onHover={setHovered}
-                onOpen={() => {
-                  setHovered(null);
-                  setSelected(project);
-                }}
-              />
-            ))}
-          </AnimatePresence>
-          {filteredProjects.length === 0 && (
-            <p className="text-xs text-body" aria-live="polite">
-              暂无此类项目。
-            </p>
-          )}
-        </div>
+          <div
+            ref={gridRef}
+            id={gridId}
+            className="grid grid-cols-1 gap-x-6 gap-y-8 md:grid-cols-2 lg:grid-cols-3 print:grid-cols-3 print:gap-4"
+          >
+            <AnimatePresence initial={false} mode="popLayout">
+              {filteredProjects.map((project, index) => (
+                <ProjectCard
+                  key={project.title}
+                  project={project}
+                  hidden={!expanded && index >= 6}
+                  revealOrder={index >= 6 ? index - 6 : undefined}
+                  selected={selected?.title === project.title}
+                  dimmed={hovered !== null && hovered !== project.title}
+                  onHover={setHovered}
+                  onOpen={() => {
+                    setHovered(null);
+                    setSelected(project);
+                  }}
+                />
+              ))}
+            </AnimatePresence>
+            {filteredProjects.length === 0 && (
+              <p className="text-xs text-body" aria-live="polite">
+                暂无此类项目。
+              </p>
+            )}
+          </div>
+        </motion.div>
         {filteredProjects.length > 6 && (
-          <button
+          <motion.button
+            ref={expandRef}
             type="button"
             className="cv-project-expand text-xs text-body print:hidden"
             aria-expanded={expanded}
             aria-controls={gridId}
-            onClick={() => {
-              setHovered(null);
-              setExpanded((value) => !value);
-            }}
+            aria-disabled={returning}
+            onClick={toggleExpanded}
+            whileHover={reduced ? undefined : { y: -1 }}
+            whileTap={reduced ? undefined : { scale: 0.98 }}
           >
-            {expanded
-              ? "收起项目"
-              : `展开全部项目（共${filteredProjects.length}项）`}
-          </button>
+            <AnimatePresence initial={false} mode="wait">
+              <motion.span
+                key={expanded ? "collapse" : "expand"}
+                initial={{ opacity: 0, y: reduced ? 0 : 3 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: reduced ? 0 : -3 }}
+                transition={{ duration: reduced ? 0 : 0.14 }}
+              >
+                {expanded
+                  ? "收起项目"
+                  : `展开全部项目（共${filteredProjects.length}项）`}
+              </motion.span>
+            </AnimatePresence>
+            <motion.span
+              className="cv-project-expand-icon"
+              aria-hidden="true"
+              animate={{ rotate: expanded ? 180 : 0 }}
+              transition={{
+                duration: reduced ? 0 : 0.3,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+            >
+              <ChevronDown size={13} strokeWidth={1.5} />
+            </motion.span>
+          </motion.button>
         )}
       </section>
       <AnimatePresence>

@@ -8,6 +8,7 @@ import {
   useSpring,
 } from "motion/react";
 import {
+  type CSSProperties,
   type PointerEvent,
   type Ref,
   useEffect,
@@ -104,6 +105,7 @@ interface ProjectCardProps {
   project: Project;
   selected?: boolean;
   hidden?: boolean;
+  revealOrder?: number;
   dimmed: boolean;
   onHover: (title: string | null) => void;
   onOpen: () => void;
@@ -114,6 +116,7 @@ export function ProjectCard({
   project,
   selected = false,
   hidden = false,
+  revealOrder,
   dimmed,
   onHover,
   onOpen,
@@ -130,6 +133,9 @@ export function ProjectCard({
   const tiltY = useSpring(rotateY, { stiffness: 210, damping: 28 });
   const glowOpacity = useSpring(glow, { stiffness: 200, damping: 30 });
   const background = useMotionTemplate`radial-gradient(240px circle at ${x}px ${y}px, oklch(var(--ink) / 0.075), transparent 75%)`;
+  const revealStyle = {
+    "--project-reveal-delay": `${Math.min(revealOrder ?? 0, 6) * 35}ms`,
+  } as CSSProperties;
   const transition = reduced
     ? { duration: 0 }
     : { type: "spring" as const, stiffness: 310, damping: 32, mass: 0.75 };
@@ -169,6 +175,7 @@ export function ProjectCard({
       className="print:break-inside-avoid cv-project-item"
       data-selected={selected ? "true" : "false"}
       data-reduced={reduced ? "true" : "false"}
+      data-overflow={revealOrder === undefined ? undefined : "true"}
       initial={{ opacity: 0, y: reduced ? 0 : 5 }}
       animate={{ opacity: interactive && dimmed ? 0.7 : 1, y: 0 }}
       exit={{ opacity: 0, y: reduced ? 0 : -4 }}
@@ -180,6 +187,7 @@ export function ProjectCard({
       onPointerLeave={leave}
       onPointerCancel={leave}
       style={{
+        ...revealStyle,
         rotateX: interactive ? tiltX : 0,
         rotateY: interactive ? tiltY : 0,
         transformPerspective: 900,
@@ -414,7 +422,7 @@ export function ProjectDetails({
               typeof project.stars === "number" && (
                 <div>
                   <dt>GitHub</dt>
-                  <dd>
+                  <dd className="cv-project-repository-meta">
                     <ProjectStars project={project} />
                     {project.starsUpdatedAt && (
                       <span className="cv-project-stars-date">
