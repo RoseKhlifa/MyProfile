@@ -2,7 +2,6 @@
 
 import {
   ArrowUpRight,
-  BookOpen,
   Check,
   Copy,
   Github,
@@ -12,7 +11,7 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { BLOG_URL, CONTACT_DETAILS } from "@/data/resume-data";
+import { CONTACT_DETAILS } from "@/data/resume-data";
 import "./contact-details.css";
 
 type CopyTarget = "wechat" | "qq";
@@ -176,27 +175,14 @@ export function ContactDetails() {
         </li>
       </ul>
       <p className="contact-details-note text-xs">{CONTACT_DETAILS.note}</p>
-      <div className="contact-details-bottom text-xs">
-        <a
-          className="contact-details-blog"
-          href={BLOG_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <BookOpen size={14} strokeWidth={1.5} aria-hidden="true" />
-          阅读博客{" "}
-          <ArrowUpRight size={14} strokeWidth={1.5} aria-hidden="true" />
-          <span className="sr-only">（新标签页）</span>
-        </a>
-        <output
-          className="contact-details-status"
-          data-failed={failed ? "true" : "false"}
-          aria-live="polite"
-          aria-atomic="true"
-        >
-          {status}
-        </output>
-      </div>
+      <output
+        className="contact-details-status text-xs"
+        data-failed={failed ? "true" : "false"}
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {status}
+      </output>
     </div>
   );
 }

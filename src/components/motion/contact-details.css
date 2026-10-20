@@ -101,34 +101,15 @@
   overflow-wrap: anywhere;
 }
 
-.contact-details-bottom {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 8px 16px;
-  min-height: 20px;
-  margin-top: 10px;
-  line-height: 1.7;
-}
-
-.contact-details-blog {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  min-height: 36px;
-  color: oklch(var(--body));
-  font-size: 14px;
-  text-decoration: none;
-}
-
-.contact-details-blog:hover {
-  color: oklch(var(--ink));
-  text-decoration: underline;
-}
-
 .contact-details-status {
+  display: block;
   color: oklch(var(--faint));
+  line-height: 1.7;
   overflow-wrap: anywhere;
+}
+
+.contact-details-status:not(:empty) {
+  margin-top: 10px;
 }
 
 .contact-details-status[data-failed="true"] {
