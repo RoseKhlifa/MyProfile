@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-labelledby="rk-title">
+  <title id="rk-title">RoseKhlifa RK</title>
+  <rect width="64" height="64" rx="13" fill="#0d0c0a"/>
+  <g fill="#eeede8">
+    <path fill-rule="evenodd" d="M8 12h14l6 6v10l-5 5 7 19h-7l-7-18h-2v18H8V12Zm6 6v10h6l2-2v-6l-2-2h-6Z"/>
+    <path d="M34 12h6v16l9-16h7L44 32l12 20h-7l-9-16v16h-6V12Z"/>
+  </g>
+</svg>
