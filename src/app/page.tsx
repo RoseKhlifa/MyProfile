@@ -44,7 +44,7 @@ export default async function ResumePage() {
           className="mx-auto w-full max-w-5xl space-y-8 print:max-w-none print:space-y-3"
           aria-label="Resume Content"
         >
-          <Reveal>
+          <Reveal className="relative z-20">
             <Header />
           </Reveal>
 

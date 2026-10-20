@@ -251,16 +251,29 @@ const checks = [
     "the print contact row has every contact link",
     () => {
       const header = html.match(/<header\b.*?<\/header>/s)?.[0] ?? "";
-      const buttons = header.match(
-        /<ul\b[^>]*aria-label="Contact links"[^>]*>.*?<\/ul>/s
-      )?.[0];
-      if (!buttons) return "no contact links list";
-      const printed = [
-        ...header
-          .replace(buttons, "")
-          .matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>[^<]+<\/a>/g),
-      ].map(([, href]) => href);
-      const links = hrefs(buttons);
+      const rows = [
+        ...header.matchAll(/<div\b[^>]*\bdata-print-contacts="true"[^>]*>/g),
+      ];
+      if (rows.length !== 1) {
+        return `found ${rows.length} print contact rows, expected 1`;
+      }
+      const row = rows[0];
+      const classes = row[0].match(/\bclass="([^"]*)"/)?.[1].split(/\s+/) ?? [];
+      if (!classes.includes("hidden") || !classes.includes("print:flex")) {
+        return "the contact row is not hidden on screen and displayed in print";
+      }
+      const remainder = header.slice(row.index);
+      let depth = 0;
+      let end = -1;
+      for (const tag of remainder.matchAll(/<\/?div\b[^>]*>/g)) {
+        depth += tag[0].startsWith("</") ? -1 : 1;
+        if (depth === 0) {
+          end = tag.index + tag[0].length;
+          break;
+        }
+      }
+      if (end < 0) return "the print contact row has no closing div";
+      const printed = hrefs(remainder.slice(0, end)).map(decode);
       const { personalWebsiteUrl, contact } = RESUME_DATA;
       const contacts = [
         personalWebsiteUrl,
@@ -268,20 +281,26 @@ const checks = [
         contact.tel && `tel:${contact.tel}`,
         ...contact.social.map(({ url }) => url),
       ].filter(Boolean);
-      if (links.length !== contacts.length) {
-        const shown = links.map(decode);
-        return [
-          `${links.length} contact links for ${contacts.length} contacts`,
-          ...contacts
-            .filter((href) => !shown.includes(href))
-            .map((href) => `no link for ${href}`),
-          ...shown
-            .filter((href) => !contacts.includes(href))
-            .map((href) => `extra link ${href}`),
-        ].join(", ");
+      const countLinks = (links) => {
+        const counts = new Map();
+        for (const href of links) counts.set(href, (counts.get(href) ?? 0) + 1);
+        return counts;
+      };
+      const expected = countLinks(contacts);
+      const actual = countLinks(printed);
+      const problems = [];
+      if (printed.length !== contacts.length) {
+        problems.push(`${printed.length} printed contact links for ${contacts.length} contacts`);
       }
-      const missing = links.filter((href) => !printed.includes(href));
-      if (missing.length > 0) return `missing ${missing.join(", ")}`;
+      for (const [href, count] of expected) {
+        const missing = count - (actual.get(href) ?? 0);
+        if (missing > 0) problems.push(`missing ${missing} printed link(s) for ${href}`);
+      }
+      for (const [href, count] of actual) {
+        const extra = count - (expected.get(href) ?? 0);
+        if (extra > 0) problems.push(`extra ${extra} printed link(s) for ${href}`);
+      }
+      if (problems.length > 0) return problems.join("; ");
     },
   ],
   [

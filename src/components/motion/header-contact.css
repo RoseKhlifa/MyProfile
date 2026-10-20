@@ -1,0 +1,240 @@
+.header-contact {
+  position: relative;
+  display: inline-flex;
+  min-width: 0;
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.header-contact-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 32px;
+  padding: 2px 0;
+  border: 0;
+  background: transparent;
+  color: oklch(var(--body));
+  font: inherit;
+  cursor: pointer;
+  transition: color 150ms ease;
+}
+
+.header-contact-trigger:hover,
+.header-contact-trigger[aria-expanded="true"] {
+  color: oklch(var(--ink));
+}
+
+.header-contact-trigger > svg {
+  color: oklch(var(--faint));
+  transition: transform 150ms ease;
+}
+
+.header-contact-trigger[aria-expanded="true"] > svg {
+  transform: rotate(180deg);
+}
+
+.header-contact-panel {
+  position: absolute;
+  z-index: 80;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 320px;
+  max-width: calc(100vw - 32px);
+  max-height: min(
+    calc(100dvh - 32px),
+    var(--header-contact-available-height, 480px)
+  );
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 15px;
+  border: 1px solid oklch(var(--rule));
+  border-radius: 8px;
+  background: oklch(var(--bg) / 0.98);
+  box-shadow: 0 12px 36px oklch(0% 0 0 / 0.2);
+  color: oklch(var(--body));
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(4px);
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease,
+    visibility 0s 150ms;
+}
+
+.header-contact-panel[data-open="true"] {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease,
+    visibility 0s;
+}
+
+.header-contact-accounts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.header-contact-account {
+  min-width: 0;
+  text-align: center;
+}
+
+.header-contact-account-label {
+  display: block;
+  margin-bottom: 10px;
+  color: oklch(var(--body));
+}
+
+.header-contact-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: oklch(var(--faint));
+  font: inherit;
+  cursor: pointer;
+  transition: color 150ms ease;
+}
+
+.header-contact-copy:hover {
+  color: oklch(var(--ink));
+}
+
+.header-contact-qr {
+  display: grid;
+  place-items: center;
+  width: min(100%, 112px);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid oklch(var(--rule));
+  border-radius: 4px;
+  background: oklch(var(--wash) / 0.5);
+}
+
+.header-contact-qr img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: oklch(var(--ink));
+}
+
+.header-contact-copy-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 22px;
+}
+
+.header-contact-account-value {
+  display: block;
+  margin-top: 3px;
+  overflow-wrap: anywhere;
+  color: oklch(var(--body));
+  user-select: text;
+}
+
+.header-contact-links {
+  display: grid;
+  gap: 2px;
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid oklch(var(--rule));
+}
+
+.header-contact-links a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 32px;
+  color: oklch(var(--body));
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+
+.header-contact-links a > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.header-contact-links a > svg {
+  flex-shrink: 0;
+  color: oklch(var(--faint));
+}
+
+.header-contact-links a > svg:last-child {
+  margin-left: auto;
+}
+
+.header-contact-links a:hover {
+  color: oklch(var(--ink));
+}
+
+.header-contact-note {
+  margin: 9px 0 0;
+  color: oklch(var(--faint));
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.header-contact-status {
+  display: block;
+  overflow-wrap: anywhere;
+  color: oklch(var(--body));
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.header-contact-status:not(:empty) {
+  margin-top: 8px;
+}
+
+.header-contact button:focus-visible,
+.header-contact a:focus-visible {
+  outline: 1px solid oklch(var(--ink));
+  outline-offset: 3px;
+}
+
+@media (max-width: 360px) {
+  .header-contact-trigger {
+    gap: 4px;
+    font-size: 11px;
+  }
+  .header-contact-trigger > svg {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-contact-trigger,
+  .header-contact-trigger > svg,
+  .header-contact-panel,
+  .header-contact-panel[data-open="true"],
+  .header-contact-copy,
+  .header-contact-links a {
+    transition: none;
+  }
+
+  .header-contact-panel {
+    transform: none;
+  }
+}
+
+@media print {
+  .header-contact {
+    display: none;
+  }
+}

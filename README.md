@@ -46,6 +46,7 @@ pnpm start --hostname 127.0.0.1 --port 4324
 | 文件 | 内容 |
 | --- | --- |
 | `src/data/resume-data.ts` | 姓名、角色、教育信息、联系方式、博客地址、站点 URL 与头像导入。 |
+| `src/data/contact-qr.ts` | 顶部 Contact me 浮层中的 WeChat／QQ 二维码图片路径，原图放入 `public/contact/`。未配置时保留账号与复制操作。 |
 | `src/data/projects.ts` | 项目介绍、分类、状态、访问入口、公开源码地址及封面类型。 |
 | `src/data/stack.ts` | 技术分组、官方文档链接与兴趣方向。 |
 | `src/lib/github-contributions.ts` | GitHub 用户名；更换用户时同步更新对应的贡献快照。 |

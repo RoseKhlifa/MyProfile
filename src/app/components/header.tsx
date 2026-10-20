@@ -1,38 +1,15 @@
-import {
-  ArrowUpRight,
-  BookOpen,
-  Github,
-  GlobeIcon,
-  Linkedin,
-  MailIcon,
-  PhoneIcon,
-  X,
-} from "lucide-react";
-import type React from "react";
+import { ArrowUpRight, Github, GlobeIcon } from "lucide-react";
 import { Magnetic, TextLoop } from "@/components/motion/enhancements";
+import { HeaderContact } from "@/components/motion/header-contact";
 import {
   InteractiveName,
   ProfileAvatar,
 } from "@/components/motion/profile-avatar";
+import { CONTACT_QR_IMAGES } from "@/data/contact-qr";
+import { PROFILE_REPOSITORY } from "@/data/projects";
 import { BLOG_URL, PROFILE_ROLES, RESUME_DATA } from "@/data/resume-data";
-import {
-  type ContactIcon,
-  type ContactLink,
-  getContactLinks,
-} from "@/lib/resume";
+import { type ContactLink, getContactLinks } from "@/lib/resume";
 import "./header.css";
-
-const ICON_MAP: Record<
-  ContactIcon,
-  React.ComponentType<React.SVGProps<SVGSVGElement>>
-> = {
-  github: Github,
-  linkedin: Linkedin,
-  x: X,
-  globe: GlobeIcon,
-  mail: MailIcon,
-  phone: PhoneIcon,
-};
 
 interface LocationLinkProps {
   location: string;
@@ -56,44 +33,27 @@ function LocationLink({ location, locationLink }: LocationLinkProps) {
   );
 }
 
-interface SocialButtonProps {
-  href: string;
-  iconType: ContactIcon;
-  label: string;
-}
-
-function SocialButton({ href, iconType, label }: SocialButtonProps) {
-  const IconComponent = ICON_MAP[iconType];
-
-  return (
-    <a
-      className="inline-flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground"
-      href={href}
-      aria-label={label}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      <IconComponent className="size-4" aria-hidden="true" />
-    </a>
-  );
-}
-
 interface ContactLinksProps {
   links: ContactLink[];
 }
 
-function ContactButtons({ links }: ContactLinksProps) {
+function ContactButtons() {
   return (
     <div className="cv-header-actions pt-1 print:hidden">
-      <ul className="flex gap-x-1" aria-label="Contact links">
-        {links.map(({ href, label, icon }) => (
-          <li key={label}>
-            <Magnetic>
-              <SocialButton href={href} iconType={icon} label={label} />
-            </Magnetic>
-          </li>
-        ))}
-      </ul>
+      <HeaderContact qrImages={CONTACT_QR_IMAGES} />
+      <span className="cv-header-divider" aria-hidden="true" />
+      <Magnetic>
+        <a
+          className="cv-header-source"
+          href={PROFILE_REPOSITORY}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="MyProfile 源码（GitHub，新标签页）"
+        >
+          <Github size={16} strokeWidth={1.5} aria-hidden="true" />
+        </a>
+      </Magnetic>
+      <span className="cv-header-divider" aria-hidden="true" />
       <Magnetic>
         <a
           className="cv-header-blog text-xs"
@@ -102,8 +62,7 @@ function ContactButtons({ links }: ContactLinksProps) {
           rel="noopener noreferrer"
           aria-label="阅读博客（新标签页）"
         >
-          <BookOpen size={14} strokeWidth={1.5} aria-hidden="true" />
-          <span>阅读博客</span>
+          <span>Blog</span>
           <ArrowUpRight
             className="cv-header-blog-arrow"
             size={12}
@@ -112,24 +71,16 @@ function ContactButtons({ links }: ContactLinksProps) {
           />
         </a>
       </Magnetic>
-      {!links.some(({ icon }) => icon === "mail") && (
-        <Magnetic>
-          <a
-            className="inline-flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground"
-            href="#contact-details"
-            aria-label="联系信息"
-          >
-            <MailIcon className="size-4" />
-          </a>
-        </Magnetic>
-      )}
     </div>
   );
 }
 
 function PrintContact({ links }: ContactLinksProps) {
   return (
-    <div className="hidden flex-wrap gap-x-2 text-sm text-muted-foreground print:flex print:text-[12px] print:leading-tight">
+    <div
+      data-print-contacts="true"
+      className="hidden flex-wrap gap-x-2 text-sm text-muted-foreground print:flex print:text-[12px] print:leading-tight"
+    >
       {links.map(({ label, href, text }, index) => (
         <span key={label} className="inline-flex gap-x-2">
           <a className="text-foreground underline" href={href}>
@@ -165,7 +116,7 @@ export function Header() {
           />
         )}
 
-        <ContactButtons links={contactLinks} />
+        <ContactButtons />
 
         <PrintContact links={contactLinks} />
       </div>
