@@ -98,6 +98,7 @@
   align-items: center;
   gap: 9px;
   width: 100%;
+  margin-top: 9px;
   padding: 0;
   border: 0;
   background: transparent;
@@ -114,12 +115,19 @@
 .header-contact-qr {
   display: grid;
   place-items: center;
-  width: min(100%, 112px);
+  width: min(100%, 128px);
   aspect-ratio: 1;
+  margin: 0 auto;
   overflow: hidden;
   border: 1px solid oklch(var(--rule));
   border-radius: 4px;
   background: oklch(var(--wash) / 0.5);
+}
+
+.header-contact-qr[data-image="true"] {
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
 }
 
 .header-contact-qr img {
@@ -127,6 +135,7 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+  image-rendering: pixelated;
   background: oklch(var(--ink));
 }
 
@@ -209,6 +218,12 @@
 }
 
 @media (max-width: 360px) {
+  .header-contact-panel {
+    padding: 11px;
+  }
+  .header-contact-accounts {
+    gap: 8px;
+  }
   .header-contact-trigger {
     gap: 4px;
     font-size: 11px;

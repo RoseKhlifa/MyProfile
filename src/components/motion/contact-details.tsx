@@ -8,9 +8,9 @@ import {
   Mail,
   MessageCircle,
   MessagesSquare,
-  X,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { XIcon } from "@/components/icons/x-icon";
 import { CONTACT_DETAILS } from "@/data/resume-data";
 import "./contact-details.css";
 
@@ -133,7 +133,12 @@ export function ContactDetails() {
             aria-label={`X ${CONTACT_DETAILS.x.handle}（新标签页）`}
           >
             <span className="contact-details-icon contact-details-x">
-              <X size={14} strokeWidth={1.5} aria-hidden="true" />
+              <XIcon
+                width={14}
+                height={14}
+                strokeWidth={1.5}
+                aria-hidden="true"
+              />
             </span>
             <span className="contact-details-label">X</span>
             <span className="contact-details-value">

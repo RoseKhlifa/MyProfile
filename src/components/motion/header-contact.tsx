@@ -7,7 +7,6 @@ import {
   Copy,
   Mail,
   QrCode,
-  X,
 } from "lucide-react";
 import Image from "next/image";
 import {
@@ -18,6 +17,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { XIcon } from "@/components/icons/x-icon";
 import { CONTACT_DETAILS } from "@/data/resume-data";
 import "./header-contact.css";
 
@@ -236,6 +236,36 @@ export function HeaderContact({ qrImages }: HeaderContactProps) {
                 <span className="header-contact-account-label">
                   {account.label}
                 </span>
+                {showImage ? (
+                  <a
+                    className="header-contact-qr"
+                    data-image="true"
+                    href={image}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`放大查看 ${account.label} 二维码（新标签页）`}
+                  >
+                    <Image
+                      src={image}
+                      width={128}
+                      height={128}
+                      alt={`${account.label} 联系二维码`}
+                      loading="lazy"
+                      decoding="async"
+                      unoptimized={true}
+                      onError={() =>
+                        setFailedImages((current) => ({
+                          ...current,
+                          [image]: true,
+                        }))
+                      }
+                    />
+                  </a>
+                ) : (
+                  <span className="header-contact-qr" data-image="false">
+                    <QrCode size={30} strokeWidth={1.15} aria-hidden="true" />
+                  </span>
+                )}
                 <button
                   className="header-contact-copy"
                   type="button"
@@ -244,30 +274,6 @@ export function HeaderContact({ qrImages }: HeaderContactProps) {
                   aria-busy={pending === account.id}
                   aria-disabled={pending !== null}
                 >
-                  <span
-                    className="header-contact-qr"
-                    data-image={showImage ? "true" : "false"}
-                  >
-                    {showImage ? (
-                      <Image
-                        src={image}
-                        width={112}
-                        height={112}
-                        alt={`${account.label} 联系二维码`}
-                        loading="lazy"
-                        decoding="async"
-                        unoptimized={true}
-                        onError={() =>
-                          setFailedImages((current) => ({
-                            ...current,
-                            [image]: true,
-                          }))
-                        }
-                      />
-                    ) : (
-                      <QrCode size={30} strokeWidth={1.15} aria-hidden="true" />
-                    )}
-                  </span>
                   <span className="header-contact-copy-label">
                     {copied === account.id ? (
                       <Check size={11} aria-hidden="true" />
@@ -291,7 +297,12 @@ export function HeaderContact({ qrImages }: HeaderContactProps) {
             rel="noopener noreferrer"
             aria-label={`X ${CONTACT_DETAILS.x.handle}（新标签页）`}
           >
-            <X size={13} strokeWidth={1.5} aria-hidden="true" />
+            <XIcon
+              width={13}
+              height={13}
+              strokeWidth={1.5}
+              aria-hidden="true"
+            />
             <span>{CONTACT_DETAILS.x.handle}</span>
             <ArrowUpRight size={12} strokeWidth={1.5} aria-hidden="true" />
           </a>
