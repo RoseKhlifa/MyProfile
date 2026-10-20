@@ -1,23 +1,34 @@
-import { GlobeIcon, MailIcon, PhoneIcon } from "lucide-react";
-import Image from "next/image";
+import {
+  ArrowUpRight,
+  BookOpen,
+  Github,
+  GlobeIcon,
+  Linkedin,
+  MailIcon,
+  PhoneIcon,
+  X,
+} from "lucide-react";
 import type React from "react";
-import { GitHubIcon } from "@/components/icons/github-icon";
-import { LinkedInIcon } from "@/components/icons/linkedin-icon";
-import { XIcon } from "@/components/icons/x-icon";
-import { RESUME_DATA } from "@/data/resume-data";
+import { Magnetic, TextLoop } from "@/components/motion/enhancements";
+import {
+  InteractiveName,
+  ProfileAvatar,
+} from "@/components/motion/profile-avatar";
+import { BLOG_URL, PROFILE_ROLES, RESUME_DATA } from "@/data/resume-data";
 import {
   type ContactIcon,
   type ContactLink,
   getContactLinks,
 } from "@/lib/resume";
+import "./header.css";
 
 const ICON_MAP: Record<
   ContactIcon,
   React.ComponentType<React.SVGProps<SVGSVGElement>>
 > = {
-  github: GitHubIcon,
-  linkedin: LinkedInIcon,
-  x: XIcon,
+  github: Github,
+  linkedin: Linkedin,
+  x: X,
   globe: GlobeIcon,
   mail: MailIcon,
   phone: PhoneIcon,
@@ -73,13 +84,46 @@ interface ContactLinksProps {
 
 function ContactButtons({ links }: ContactLinksProps) {
   return (
-    <ul className="flex gap-x-1 pt-1 print:hidden" aria-label="Contact links">
-      {links.map(({ href, label, icon }) => (
-        <li key={label}>
-          <SocialButton href={href} iconType={icon} label={label} />
-        </li>
-      ))}
-    </ul>
+    <div className="cv-header-actions pt-1 print:hidden">
+      <ul className="flex gap-x-1" aria-label="Contact links">
+        {links.map(({ href, label, icon }) => (
+          <li key={label}>
+            <Magnetic>
+              <SocialButton href={href} iconType={icon} label={label} />
+            </Magnetic>
+          </li>
+        ))}
+      </ul>
+      <Magnetic>
+        <a
+          className="cv-header-blog text-xs"
+          href={BLOG_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="阅读博客（新标签页）"
+        >
+          <BookOpen size={14} strokeWidth={1.5} aria-hidden="true" />
+          <span>阅读博客</span>
+          <ArrowUpRight
+            className="cv-header-blog-arrow"
+            size={12}
+            strokeWidth={1.5}
+            aria-hidden="true"
+          />
+        </a>
+      </Magnetic>
+      {!links.some(({ icon }) => icon === "mail") && (
+        <Magnetic>
+          <a
+            className="inline-flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground"
+            href="#contact-details"
+            aria-label="联系信息"
+          >
+            <MailIcon className="size-4" />
+          </a>
+        </Magnetic>
+      )}
+    </div>
   );
 }
 
@@ -103,35 +147,30 @@ export function Header() {
 
   return (
     <header className="flex items-center justify-between gap-x-4">
-      <div className="flex-1 space-y-1.5 print:space-y-1">
+      <div className="min-w-0 flex-1 space-y-1.5 print:space-y-1">
         <h1
           className="font-pixel text-[28px] leading-none sm:text-[32px]"
           id="resume-name"
         >
-          {RESUME_DATA.name}
+          <InteractiveName name={RESUME_DATA.name} />
         </h1>
         <p className="max-w-md text-pretty text-sm text-body print:text-[12px] print:leading-tight">
-          {RESUME_DATA.about}
+          <TextLoop words={PROFILE_ROLES} />
         </p>
 
-        <LocationLink
-          location={RESUME_DATA.location}
-          locationLink={RESUME_DATA.locationLink}
-        />
+        {RESUME_DATA.location && RESUME_DATA.locationLink && (
+          <LocationLink
+            location={RESUME_DATA.location}
+            locationLink={RESUME_DATA.locationLink}
+          />
+        )}
 
         <ContactButtons links={contactLinks} />
 
         <PrintContact links={contactLinks} />
       </div>
 
-      <Image
-        className="size-28 shrink-0 rounded-xl bg-muted object-cover ring-1 ring-muted"
-        src={RESUME_DATA.avatar}
-        alt={`${RESUME_DATA.name}'s profile picture`}
-        width={112}
-        height={112}
-        preload={true}
-      />
+      <ProfileAvatar src={RESUME_DATA.avatar} name={RESUME_DATA.name} />
     </header>
   );
 }

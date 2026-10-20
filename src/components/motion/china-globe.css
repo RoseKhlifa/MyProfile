@@ -1,0 +1,152 @@
+.china-globe-root {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  color: oklch(var(--body));
+  font-family: inherit;
+}
+.china-globe-viewport {
+  position: relative;
+  flex: 0 1 148px;
+  width: 148px;
+  min-width: 96px;
+  max-width: 148px;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 50%;
+  isolation: isolate;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+}
+.china-globe-viewport[data-dragging="true"] {
+  cursor: grabbing;
+}
+.china-globe-mount {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.china-globe-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.china-globe-ready .china-globe-mount {
+  opacity: 1;
+}
+.china-globe-fallback {
+  position: absolute;
+  inset: 9%;
+  border: 1px solid oklch(var(--faint) / 0.7);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 30%,
+    oklch(var(--faint) / 0.12),
+    transparent 75%
+  );
+}
+.china-globe-fallback::before,
+.china-globe-fallback::after,
+.china-globe-fallback > i {
+  position: absolute;
+  content: "";
+  display: block;
+  inset: 0;
+  border: 1px solid oklch(var(--faint) / 0.4);
+  border-radius: 50%;
+}
+.china-globe-fallback::before {
+  inset: 0 23%;
+}
+.china-globe-fallback::after {
+  inset: 27% 0;
+}
+.china-globe-fallback > i:first-child {
+  inset: 12% 0 47%;
+}
+.china-globe-fallback > i:nth-child(2) {
+  inset: 47% 0 12%;
+}
+.china-globe-fallback > span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  background: oklch(var(--ink));
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+.china-globe-ready .china-globe-fallback {
+  visibility: hidden;
+}
+.china-globe-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+  font-family: inherit;
+}
+.china-globe-eyebrow {
+  color: oklch(var(--faint));
+  font-family: inherit;
+  font-size: 10px;
+  line-height: 1.5;
+}
+.china-globe-location {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: oklch(var(--ink));
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.china-globe-location-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.65;
+}
+.china-globe-reset {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  margin: -4px 0 -4px 1px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: oklch(var(--faint));
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+}
+.china-globe-reset:hover,
+.china-globe-reset:focus-visible {
+  border-color: oklch(var(--rule));
+  color: oklch(var(--ink));
+  background: oklch(var(--wash));
+}
+@media (max-width: 420px) {
+  .china-globe-root {
+    gap: 10px;
+  }
+  .china-globe-viewport {
+    flex-basis: 132px;
+    max-width: 132px;
+  }
+}
+@media print {
+  .china-globe-reset {
+    display: none;
+  }
+}

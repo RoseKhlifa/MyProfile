@@ -1,0 +1,279 @@
+.cv-contribution {
+  --contribution-0: oklch(var(--wash));
+  --contribution-1: oklch(31% 0.035 155);
+  --contribution-2: oklch(44% 0.055 155);
+  --contribution-3: oklch(57% 0.075 155);
+  --contribution-4: oklch(71% 0.09 155);
+  position: relative;
+  min-width: 0;
+}
+.cv-contribution-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  line-height: 1.6;
+}
+.cv-contribution-total {
+  color: oklch(var(--ink));
+  font-variant-numeric: tabular-nums;
+}
+.cv-contribution-profile {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: oklch(var(--faint));
+  transition: color 0.2s;
+}
+.cv-contribution-profile:hover {
+  color: oklch(var(--ink));
+}
+.cv-contribution-frame {
+  padding: 14px 14px 12px;
+  border: 1px solid oklch(var(--rule) / 0.75);
+  border-radius: 6px;
+}
+.cv-contribution-scroll-wrap {
+  position: relative;
+}
+.cv-contribution-scroll-wrap::before,
+.cv-contribution-scroll-wrap::after {
+  position: absolute;
+  z-index: 2;
+  inset-block: 0;
+  width: 25px;
+  opacity: 0;
+  pointer-events: none;
+  content: "";
+  transition: opacity 0.2s;
+}
+.cv-contribution-scroll-wrap::before {
+  left: 0;
+  background: linear-gradient(to right, oklch(var(--bg)), transparent);
+}
+.cv-contribution-scroll-wrap::after {
+  right: 0;
+  background: linear-gradient(to left, oklch(var(--bg)), transparent);
+}
+.cv-contribution-scroll-wrap[data-fade-start="true"]::before,
+.cv-contribution-scroll-wrap[data-fade-end="true"]::after {
+  opacity: 1;
+}
+.cv-contribution-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: oklch(var(--rule)) transparent;
+  padding: 2px;
+}
+.cv-contribution-table {
+  width: 100%;
+  min-width: 692px;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 4px;
+  margin: 0;
+  font-size: 10px;
+  color: oklch(var(--faint));
+}
+.cv-contribution-plot {
+  position: relative;
+  min-width: 692px;
+}
+.cv-contribution-snake {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  opacity: 0;
+  pointer-events: none;
+  color: oklch(74% 0.065 155);
+  transition: opacity 0.35s;
+}
+.cv-contribution-snake-body {
+  stroke: currentColor;
+  opacity: 0.7;
+}
+.cv-contribution-snake-head {
+  fill: currentColor;
+}
+.cv-contribution-snake-eye {
+  fill: oklch(var(--bg));
+}
+.cv-contribution-snake-meal {
+  fill: currentColor;
+  opacity: 0;
+}
+.cv-contribution-weekday-col {
+  width: 27px;
+}
+.cv-contribution-table td,
+.cv-contribution-table th {
+  padding: 0;
+  font-weight: 400;
+}
+.cv-contribution-table thead td {
+  position: relative;
+  height: 20px;
+}
+.cv-contribution-table thead span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+}
+.cv-contribution-table th {
+  text-align: left;
+  vertical-align: middle;
+}
+.cv-contribution-day,
+.cv-contribution-empty {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 2px;
+}
+.cv-contribution-day,
+.cv-contribution-swatch {
+  background: var(--contribution-0);
+  box-shadow: inset 0 0 0 1px oklch(var(--ink) / 0.025);
+}
+.cv-contribution [data-level="1"] {
+  background: var(--contribution-1);
+}
+.cv-contribution [data-level="2"] {
+  background: var(--contribution-2);
+}
+.cv-contribution [data-level="3"] {
+  background: var(--contribution-3);
+}
+.cv-contribution [data-level="4"] {
+  background: var(--contribution-4);
+}
+.cv-contribution-day {
+  position: relative;
+  cursor: default;
+  border: 0;
+  transition:
+    filter 0.18s,
+    box-shadow 0.18s,
+    transform 0.18s;
+}
+.cv-contribution-day:hover,
+.cv-contribution-day:focus-visible {
+  z-index: 1;
+  filter: brightness(1.3);
+  transform: scale(1.18);
+  box-shadow: 0 0 0 1px oklch(var(--faint));
+}
+.cv-contribution[data-revealed="true"] .cv-contribution-day {
+  animation: cv-contribution-appear 0.6s both;
+  animation-delay: calc(var(--week) * 9ms + var(--day) * 16ms);
+}
+@keyframes cv-contribution-appear {
+  from {
+    opacity: 0.25;
+    scale: 0.86;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+.cv-contribution-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 14px;
+  font-size: 10px;
+  line-height: 1.5;
+}
+.cv-contribution-legend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+.cv-contribution-legend > span:first-child {
+  margin-right: 3px;
+}
+.cv-contribution-legend > span:last-child {
+  margin-left: 3px;
+}
+.cv-contribution-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+.cv-contribution-tooltip {
+  position: absolute;
+  z-index: 5;
+  padding: 7px 10px;
+  transform: translate(-50%, -100%);
+  border: 1px solid oklch(var(--rule));
+  border-radius: 4px;
+  background: oklch(var(--bg));
+  box-shadow: 0 4px 18px oklch(var(--bg) / 0.6);
+  color: oklch(var(--ink));
+  font-size: 11px;
+  line-height: 1.5;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.cv-contribution-cached {
+  margin-top: 8px;
+  font-size: 10px;
+}
+@media (max-width: 640px) {
+  .cv-contribution-heading {
+    gap: 8px;
+  }
+  .cv-contribution-profile {
+    font-size: 11px;
+  }
+  .cv-contribution-frame {
+    padding: 12px 10px 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cv-contribution[data-revealed="true"] .cv-contribution-day {
+    animation: none;
+  }
+  .cv-contribution-day,
+  .cv-contribution-profile,
+  .cv-contribution-scroll-wrap::before,
+  .cv-contribution-scroll-wrap::after {
+    transition: none;
+  }
+}
+@media print {
+  .cv-contribution {
+    break-inside: avoid;
+  }
+  .cv-contribution-table {
+    min-width: 0;
+    border-spacing: 2px;
+  }
+  .cv-contribution-plot {
+    min-width: 0;
+  }
+  .cv-contribution-scroll {
+    overflow: visible;
+  }
+  .cv-contribution-day {
+    animation: none !important;
+    print-color-adjust: exact;
+  }
+  .cv-contribution-tooltip,
+  .cv-contribution-snake,
+  .cv-contribution-scroll-wrap::before,
+  .cv-contribution-scroll-wrap::after {
+    display: none;
+  }
+}

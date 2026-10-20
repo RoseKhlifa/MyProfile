@@ -29,6 +29,16 @@
 }
 
 @layer base {
+  :root[data-theme="dark"] {
+    --bg: 15.5% 0.004 70;
+    --ink: 94% 0.004 80;
+    --body: 76% 0.004 80;
+    --faint: 60% 0.004 80;
+    --rule: 27% 0.004 70;
+    --wash: 20% 0.004 70;
+    color-scheme: dark;
+  }
+
   * {
     @apply border-border;
   }
@@ -66,6 +76,51 @@
 @page {
   size: A4;
   margin: 10mm;
+}
+
+body {
+  position: relative;
+  isolation: isolate;
+}
+#main-content {
+  position: relative;
+  z-index: 1;
+  padding-bottom: 140px;
+}
+.cv-contact-layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+
+.cv-contact-layout > div:first-child {
+  flex: 1;
+  min-width: 0;
+}
+.cv-contact-layout > .china-globe-root {
+  width: 285px;
+  flex: 0 0 285px;
+}
+@media (max-width: 480px) {
+  .cv-contact-layout {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+  }
+  .cv-contact-layout > .china-globe-root {
+    width: min(100%, 285px);
+    flex: 0 0 auto;
+    align-self: center;
+  }
+}
+@media print {
+  .cv-contact-layout {
+    display: block;
+  }
+  #main-content {
+    padding-bottom: 0;
+  }
 }
 
 @media print {

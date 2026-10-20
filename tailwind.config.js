@@ -15,10 +15,11 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        mono: ["var(--font-geist-mono)", "ui-monospace", "monospace"],
+        mono: ["GeistMono", "var(--font-chinese-sans)", "ui-monospace", "monospace"],
         pixel: [
           "var(--font-geist-pixel-square)",
-          "var(--font-geist-mono)",
+          "GeistMono",
+          "var(--font-chinese-sans)",
           "monospace",
         ],
       },

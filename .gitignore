@@ -16,6 +16,9 @@
 # production
 /build
 
+# persistent visit counter (mount this directory when deploying)
+/.data/
+
 # misc
 .DS_Store
 *.pem
@@ -37,3 +40,17 @@ next-env.d.ts
 
 # ide
 .idea
+
+# local review material and private project research
+/evidence/
+/docs/project-research/
+/DEMO.md
+/src/data/profile.png
+
+# local environment and database files
+.env
+.env.*
+!.env.example
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm

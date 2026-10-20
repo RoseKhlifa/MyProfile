@@ -1,167 +1,51 @@
 import type { ResumeData } from "@/lib/types";
-import avatar from "./avatar.jpg";
+import { PROJECT_CATALOG } from "./projects";
+import avatar from "./user-avatar.jpg";
+
+export const BLOG_URL = "http://51.83.101.143:18180";
+export const CONTACT_DETAILS = {
+  email: "rosekhlifa@gmail.com",
+  wechat: "R0sEkHL1fA",
+  qq: "2221542777",
+  x: { handle: "@RoseKhlifa888", url: "https://x.com/RoseKhlifa888" },
+  github: {
+    handle: "github.com/RoseKhlifa",
+    url: "https://github.com/RoseKhlifa",
+  },
+  note: "添加联系方式时，请注明来意。",
+};
+export const PROFILE_ROLES = [
+  "独立开发者",
+  "VibeCoding成瘾者",
+  "AI技术服务从业者",
+];
+
+export const PROFILE_EDUCATION = {
+  school: "河南农业大学",
+  major: "软件工程",
+  classOf: "2029",
+};
 
 export const RESUME_DATA: ResumeData = {
-  name: "Bartosz Jarocki",
-  location: "Wrocław, Poland, CET",
-  locationLink: "https://www.google.com/maps/place/Wrocław",
-  about: "Full Stack Engineer building products from the ground up.",
-  summary:
-    "Full Stack Engineer with 15+ years of experience and 10+ years working remotely. Building high-performance web applications, leading distributed teams, and creating open source tools used by thousands of developers.",
+  name: "RoseKhlifa",
+  location: "",
+  locationLink: "",
+  about: PROFILE_ROLES.join("、"),
+  summary: `${PROFILE_EDUCATION.school}${PROFILE_EDUCATION.major}专业学生 ${PROFILE_EDUCATION.classOf}届`,
   avatar,
-  siteUrl: "https://cv.jarocki.me",
-  personalWebsiteUrl: "https://jarocki.me",
+  siteUrl: "https://rosekhlifa.com",
   contact: {
-    email: "bartosz.jarocki@hey.com",
-    tel: "+48530213401",
+    email: CONTACT_DETAILS.email,
+    tel: "",
     social: [
-      {
-        name: "GitHub",
-        url: "https://github.com/BartoszJarocki",
-        icon: "github",
-      },
-      {
-        name: "LinkedIn",
-        url: "https://www.linkedin.com/in/bjarocki/",
-        icon: "linkedin",
-      },
-      {
-        name: "X",
-        url: "https://x.com/BartoszJarocki",
-        icon: "x",
-      },
+      { name: "GitHub", url: CONTACT_DETAILS.github.url, icon: "github" },
+      { name: "X", url: CONTACT_DETAILS.x.url, icon: "x" },
     ],
   },
-  education: [
-    {
-      school: "Wrocław University of Technology",
-      degree: "Bachelor's Degree in Control systems engineering and Robotics",
-      start: "2007",
-      end: "2010",
-    },
-  ],
-  work: [
-    {
-      company: "Motion",
-      link: "https://motionapp.com/",
-      badges: ["Remote", "AI", "React", "Next.js", "TypeScript", "AdonisJS"],
-      title: "Senior Software Engineer",
-      start: "2025",
-      end: null,
-      description:
-        "Building an internal AI agents platform that enables marketing teams to create and manage AI-powered workflows.",
-    },
-    {
-      company: "Film.io",
-      link: "https://film.io",
-      badges: ["Remote", "React", "Next.js", "TypeScript", "Node.js"],
-      title: "Software Architect",
-      start: "2024",
-      end: "2025",
-      description:
-        "Led technical architecture of a blockchain-based film funding platform.",
-      highlights: [
-        "Architected migration from CRA to Next.js for improved performance, SEO, and DX",
-        "Established release process enabling faster deployments and reliable rollbacks",
-        "Implemented system-wide monitoring and security improvements",
-      ],
-    },
-    {
-      company: "Parabol",
-      link: "https://parabol.co",
-      badges: [
-        "Remote",
-        "React",
-        "TypeScript",
-        "Node.js",
-        "GraphQL",
-        "Tailwind CSS",
-      ],
-      title: "Senior Full Stack Developer",
-      start: "2021",
-      end: "2024",
-      description:
-        "Led a product squad building an enterprise agile meeting platform.",
-      highlights: [
-        "Built design system with Tailwind CSS, improving development speed and time to market",
-        "Implemented engineering practices: PR automation, code review guidelines, and workflows",
-        "Open source contributions to Relay DevTools and React i18n tooling",
-      ],
-    },
-    {
-      company: "Clevertech",
-      link: "https://clevertech.biz",
-      badges: ["Remote", "React", "TypeScript", "Node.js", "Android", "Kotlin"],
-      title: "Lead Android Developer → Full Stack Developer",
-      start: "2015",
-      end: "2021",
-      description:
-        "Transitioned from mobile to full-stack development while leading distributed teams across multiple client projects.",
-      highlights: [
-        "Led frontend team at Evercast, building real-time platform supporting 30+ users per room with HD streaming and collaboration tools",
-        "Developed offline-first Android app for DKMS, improving donor registration process",
-        "Led development teams across multiple successful client projects",
-      ],
-    },
-    {
-      company: "Jojo Mobile",
-      link: "https://bsgroup.eu/",
-      badges: ["On Site", "Android", "Java", "Kotlin"],
-      title: "Android Developer → Lead Android Developer",
-      start: "2012",
-      end: "2015",
-      description:
-        "First Android developer, grew and led a team of 15+ engineers. Established mobile engineering culture and delivery processes.",
-      highlights: [
-        "Developed apps for major Polish companies including LOT, Polskie Radio, and Agora",
-        "Built and mentored high-performing mobile development team",
-      ],
-    },
-    {
-      company: "Nokia Siemens Networks",
-      link: "https://www.nokia.com",
-      badges: ["On Site", "C/C++", "LTE", "Agile"],
-      title: "C/C++ Developer",
-      start: "2010",
-      end: "2012",
-      description:
-        "Developed software for LTE base stations at enterprise scale. Built strong foundations in software architecture, testing practices, and cross-team collaboration.",
-    },
-  ],
-  skills: [
-    "React/Next.js",
-    "TypeScript",
-    "Node.js",
-    "AI/LLMs",
-    "Tailwind CSS",
-    "Design Systems",
-    "WebRTC",
-    "WebSockets",
-    "GraphQL",
-    "System Architecture",
-    "Remote Team Leadership",
-  ],
-  projects: [
-    {
-      title: "Monito",
-      techStack: ["TypeScript", "Next.js", "AI", "Browser Extension"],
-      description: "Autonomous QA AI agent for web applications",
-      link: "https://monito.dev/",
-    },
-    {
-      title: "43frames",
-      techStack: ["TypeScript", "Next.js", "AI"],
-      description: "AI-powered image and video generation studio",
-      link: "https://43frames.com/",
-    },
-    {
-      title: "Minimalist CV",
-      techStack: ["TypeScript", "Next.js", "Tailwind CSS"],
-      description:
-        "Open source, print-friendly CV template. 9,600+ stars on GitHub",
-      link: "https://github.com/BartoszJarocki/cv",
-    },
-  ],
+  education: [],
+  work: [],
+  skills: [],
+  projects: PROJECT_CATALOG,
 };
 
 export const SECTION_TITLES = {
@@ -169,5 +53,5 @@ export const SECTION_TITLES = {
   work: "Work Experience",
   education: "Education",
   skills: "Skills",
-  projects: "Side projects",
+  projects: "Projects",
 } satisfies Partial<Record<keyof ResumeData, string>>;

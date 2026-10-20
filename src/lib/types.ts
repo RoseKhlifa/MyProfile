@@ -27,10 +27,45 @@ export interface EducationEntry {
 }
 
 export interface Project {
+  id?: string;
+  category?:
+    | "services"
+    | "creative"
+    | "automation"
+    | "experiments"
+    | "personal";
+  demo?: boolean;
+  previewKind?: "homepage" | "journal" | "tool";
+  cover?:
+    | "studio"
+    | "prompts"
+    | "gateway"
+    | "recharge"
+    | "sms"
+    | "shop"
+    | "console"
+    | "farm"
+    | "campus"
+    | "checkin"
+    | "miniapp"
+    | "exam"
+    | "fps"
+    | "spider";
   title: string;
+  eyebrow?: string;
   techStack: string[];
   description: string;
   link?: string;
+  linkLabel?: string;
+  status?: "运营中" | "开源" | "筹划中" | "已停服" | "实验项目" | "个人项目";
+  metric?: string;
+  details?: string;
+  highlights?: string[];
+  accessNote?: string;
+  repository?: string;
+  stars?: number;
+  starsUpdatedAt?: string;
+  related?: string;
 }
 
 export interface ResumeData {

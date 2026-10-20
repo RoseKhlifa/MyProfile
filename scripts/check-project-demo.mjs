@@ -1,0 +1,13 @@
+import assert from "node:assert/strict";
+const base = new URL(process.argv[2] ?? "http://127.0.0.1:4324/");
+const response=await fetch(new URL("/preview/projects",base));
+assert.equal(response.status,200);
+const html=await response.text();
+const articles=[...html.matchAll(/<article\b[^>]*\bcv-project-item\b/g)].length;
+assert.equal(articles,8);
+assert.ok(html.includes("2 项真实项目，6 项示例"));
+assert.ok(html.includes('content="noindex, nofollow"'));
+assert.ok(!html.includes("拖动地球旋转"));
+assert.ok(!html.includes("motion-enhance-toggle"));
+assert.ok(!html.includes("cv-project-cursor"));
+console.log(JSON.stringify({status:"PASS",route:"/preview/projects",projects:articles,examples:6,noIndex:true,removedControls:true}));

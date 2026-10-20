@@ -3,7 +3,7 @@ import module from "node:module";
 
 if (!module.registerHooks) {
   console.error(
-    `pnpm verify needs Node 22.15 or later for module.registerHooks. This is Node ${process.version}.`
+    `pnpm verify needs Node 22.18 or later for module.registerHooks. This is Node ${process.version}.`
   );
   process.exit(1);
 }
@@ -19,6 +19,14 @@ const loadTypeScriptAsModules = (url, context, nextLoad) =>
   );
 module.registerHooks({ load: stubImages });
 module.registerHooks({ load: loadTypeScriptAsModules });
+module.registerHooks({
+  resolve(specifier, context, nextResolve) {
+    if (specifier.startsWith(".") && !/\.[a-z]+$/i.test(specifier) && context.parentURL?.endsWith(".ts")) {
+      return nextResolve(`${specifier}.ts`, context);
+    }
+    return nextResolve(specifier, context);
+  },
+});
 const { RESUME_DATA, SECTION_TITLES } = await import(
   "../src/data/resume-data.ts"
 );

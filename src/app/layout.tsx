@@ -2,11 +2,24 @@ import { Analytics } from "@vercel/analytics/react";
 import { GeistMono } from "geist/font/mono";
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
+import { AmbientBackground } from "@/components/motion/ambient-background";
 
 import "./globals.css";
 import type React from "react";
+import {
+  MotionProvider,
+  ReadingProgress,
+} from "@/components/motion/enhancements";
 import { RESUME_DATA } from "@/data/resume-data";
 import { getPageTitle } from "@/lib/resume";
+
+const chineseSans = localFont({
+  src: "../../public/fonts/rk-sans.woff2",
+  variable: "--font-chinese-sans",
+  weight: "100 900",
+  display: "swap",
+  preload: false,
+});
 
 // geist/font/pixel declares all five Pixel variants, and Next preloads every
 // font a module declares, so only the Square variant is declared here.
@@ -74,11 +87,16 @@ export default function RootLayout({
 }) {
   return (
     <html
-      lang="en"
-      className={`${GeistMono.variable} ${geistPixelSquare.variable}`}
+      lang="zh-CN"
+      data-theme="dark"
+      className={`${GeistMono.variable} ${geistPixelSquare.variable} ${chineseSans.variable}`}
     >
       <body>
-        {children}
+        <MotionProvider>
+          <AmbientBackground />
+          <ReadingProgress />
+          {children}
+        </MotionProvider>
         <Analytics />
       </body>
     </html>
