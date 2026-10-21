@@ -14,7 +14,7 @@ for (const asset of assets) {
   assert.equal(result.status, 200, asset);
   assert.ok((await result.arrayBuffer()).byteLength > 0);
 }
-const blog = await fetch("http://51.83.101.143:18180", { signal: AbortSignal.timeout(15000) });
+const blog = await fetch("https://blog.rosekhlifa.com", { signal: AbortSignal.timeout(15000) });
 assert.equal(blog.status, 200);
 await blog.arrayBuffer();
 const avatarResponse = await fetch(new URL("/avatar.jpg", base));

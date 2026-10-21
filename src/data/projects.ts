@@ -322,7 +322,7 @@ export const PROJECT_CATALOG: Project[] = [
     description:
       "基于 astro-whono 二次开发的个人博客，加入在线写作、自动发布与备份回滚，用来记录开发过程和技术笔记。",
     techStack: ["Astro", "TypeScript", "Svelte", "Docker"],
-    link: "http://51.83.101.143:18180",
+    link: "https://blog.rosekhlifa.com",
     linkLabel: "阅读博客",
     ...publicRepository("RoseKhlifa/MyBlog"),
     details:

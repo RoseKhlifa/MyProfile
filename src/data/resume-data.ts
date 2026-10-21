@@ -2,7 +2,7 @@ import type { ResumeData } from "@/lib/types";
 import { PROJECT_CATALOG } from "./projects";
 import avatar from "./user-avatar.jpg";
 
-export const BLOG_URL = "http://51.83.101.143:18180";
+export const BLOG_URL = "https://blog.rosekhlifa.com";
 export const CONTACT_DETAILS = {
   email: "rosekhlifa@gmail.com",
   wechat: "R0sEkHL1fA",
